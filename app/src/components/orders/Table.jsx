@@ -32,7 +32,7 @@ function OrdersTable() {
 
     getOrders()
       .then((data) => setOrders(data))
-      .catch((error) => console.log(error))
+      .catch((error) => toast.error(error.response?.data, { autoClose: 1500 }))
       .finally(() => {
         setLoading(false);
         setIsStatusUpdated(false);
@@ -82,8 +82,12 @@ function OrdersTable() {
                   return (
                     <div key={index} className="flex items-center">
                       <RxDotFilled />
-                      <span className="whitespace-nowrap">{item.menuItem.name}</span>
-                      <span className="text-[0.6rem] ml-2 whitespace-nowrap">x {item.quantity}</span>
+                      <span className="whitespace-nowrap">
+                        {item.menuItem.name}
+                      </span>
+                      <span className="text-[0.6rem] ml-2 whitespace-nowrap">
+                        x {item.quantity}
+                      </span>
                     </div>
                   );
                 })}

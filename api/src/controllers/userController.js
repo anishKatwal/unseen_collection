@@ -1,3 +1,4 @@
+import { ROLE_ADMIN, ROLE_EMPLOYEE } from "../constants/roles.js";
 import userService from "../services/userService.js";
 
 const getAllUsers = async (req, res) => {
@@ -43,11 +44,20 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  const user = req.user;
+
   try {
     const input = req.body;
 
     if (!input.email || !input.password)
       return res.status(422).send("Email or password is required.");
+
+    if (
+      input.roles.includes(ROLE_EMPLOYEE) &&
+      !user.roles.includes(ROLE_ADMIN)
+    ) {
+      return res.status(403).send("Access denied.");
+    }
 
     const data = await userService.createUser(input);
 

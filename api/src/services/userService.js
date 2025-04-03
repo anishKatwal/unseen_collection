@@ -1,8 +1,9 @@
-import User from "../models/User.js";
-import authService from "./authService.js";
 import { formatUserData } from "../helpers/dataFormatter.js";
+import { ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_USER } from "../constants/roles.js";
 import { uploadFileOnCloudinary } from "../utils/file.js";
-import { ROLE_EMPLOYEE, ROLE_USER } from "../constants/roles.js";
+import authService from "./authService.js";
+import bcrypt from "bcryptjs";
+import User from "../models/User.js";
 
 const getAllUsers = async () => {
   const users = await User.find();
@@ -17,7 +18,16 @@ const getCustomers = async () => {
 };
 
 const getEmployees = async () => {
-  const users = await User.find({ roles: ROLE_EMPLOYEE });
+  const users = await User.find({
+    $and: [
+      { roles: ROLE_EMPLOYEE },
+      {
+        roles: {
+          $ne: ROLE_ADMIN,
+        },
+      },
+    ],
+  });
 
   return users.map((user) => formatUserData(user));
 };
@@ -48,6 +58,10 @@ const updateUser = async (id, input) => {
       statusCode: 404,
       message: "User not found.",
     };
+
+  if (input.password) {
+    input.password = bcrypt.hashSync(input.password);
+  }
 
   return await User.findByIdAndUpdate(id, input);
 };

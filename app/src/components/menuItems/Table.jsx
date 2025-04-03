@@ -71,6 +71,7 @@ const MenuItemsTable = () => {
             menuItems.map((item, index) => (
               <MenuItemTableData
                 key={index}
+                index={index}
                 {...item}
                 deleteAction={
                   <button

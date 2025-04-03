@@ -1,7 +1,6 @@
 import { getSecurity } from "../api/auth";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const MainLayout = () => {
@@ -19,7 +18,6 @@ const MainLayout = () => {
     <>
       <Header />
       <Outlet />
-      <Footer />
     </>
   ) : (
     <div className="w-full h-svh flex items-center justify-center text-red-600 text-xl">

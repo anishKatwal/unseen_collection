@@ -16,11 +16,12 @@ const registerUser = async (input) => {
   const hashedPassword = bcrypt.hashSync(input.password);
 
   const createdUser = await User.create({
-    name: input.name,
     address: input.address,
     email: input.email,
-    phone: input.phone,
+    isActive: true,
+    name: input.name,
     password: hashedPassword,
+    phone: input.phone,
     roles: input.roles,
   });
 
@@ -34,6 +35,13 @@ const loginUser = async (input) => {
     throw {
       statusCode: 400,
       message: "User not found.",
+    };
+  }
+
+  if (!user.isActive) {
+    throw {
+      statusCode: 400,
+      message: "User deactivated.",
     };
   }
 

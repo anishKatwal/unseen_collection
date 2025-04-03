@@ -7,8 +7,12 @@ import {
 import Home from "./pages/Home";
 import {
   ADD_MENU_ITEM_ROUTE,
+  ADD_SCHEDULE_ROUTE,
+  ADD_STAFF_ROUTE,
   CART_ITEMS_ROUTE,
   EDIT_MENU_ITEM_ROUTE,
+  EDIT_SCHEDULE_ROUTE,
+  EDIT_STAFF_ROUTE,
   LOGIN_ROUTE,
   MENU_ITEM_LIST_ROUTE,
   MENU_ITEMS_ROUTE,
@@ -16,13 +20,19 @@ import {
   ORDERS_ROUTE,
   PROFILE_ROUTE,
   REGISTER_ROUTE,
+  SCHEDULES_ROUTE,
+  STAFF_LIST_ROUTE,
   USERS_LIST_ROUTE,
 } from "./constants/routes";
 import AddMenuItem from "./pages/menuItems/Add";
+import AddStaff from "./pages/users/staffs/Add";
 import AdminLayout from "./layouts/AdminLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import CartItems from "./pages/cart";
+import CreateSchedule from "./pages/schedules/Add";
 import EditMenuItem from "./pages/menuItems/Edit";
+import EditSchedule from "./pages/schedules/Edit";
+import EditStaff from "./pages/users/staffs/Edit";
 import Login from "./pages/auth/Login";
 import MainLayout from "./layouts/MainLayout";
 import MenuItems from "./pages/menuItems";
@@ -32,8 +42,11 @@ import Orders from "./pages/orders";
 import OrdersList from "./pages/orders/List";
 import ProfilePage from "./pages/profile";
 import Register from "./pages/auth/Register";
+import SchedulesPage from "./pages/schedules";
+import StaffsListPage from "./pages/users/staffs/List";
 import UnAuthLayout from "./layouts/UnAuthLayout";
 import UsersPage from "./pages/users";
+import NotFound from "./pages/NotFound";
 
 const Routes = () => {
   const router = createBrowserRouter(
@@ -59,7 +72,17 @@ const Routes = () => {
               element={<EditMenuItem />}
             />
             <Route path={ORDERS_LIST_ROUTE} element={<OrdersList />} />
+            <Route path={STAFF_LIST_ROUTE} element={<StaffsListPage />} />
             <Route path={USERS_LIST_ROUTE} element={<UsersPage />} />
+            <Route path={ADD_STAFF_ROUTE} element={<AddStaff />} />
+            <Route path={`${EDIT_STAFF_ROUTE}/:id`} element={<EditStaff />} />
+
+            <Route path={SCHEDULES_ROUTE} element={<SchedulesPage />} />
+            <Route path={ADD_SCHEDULE_ROUTE} element={<CreateSchedule />} />
+            <Route
+              path={`${EDIT_SCHEDULE_ROUTE}/:id`}
+              element={<EditSchedule />}
+            />
           </Route>
         </Route>
 
@@ -67,6 +90,8 @@ const Routes = () => {
           <Route path={LOGIN_ROUTE} element={<Login />} />
           <Route path={REGISTER_ROUTE} element={<Register />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Route>
     )
   );

@@ -1,9 +1,7 @@
 import { addToCart } from "../../redux/cart/cartSlice";
-import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { MENU_ITEMS_ROUTE } from "../../constants/routes";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import pizza from "../../assets/images/pizza.png";
 
 const MenuItemCard = ({
@@ -16,13 +14,21 @@ const MenuItemCard = ({
 }) => {
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.auth);
+
   function addItemToCart() {
+    if (!user) {
+      toast.error("Please login to order items.", { autoClose: 1500 });
+
+      return;
+    }
+
     dispatch(
       addToCart({
         id,
         name,
         price,
-        image: imageUrls [0],
+        image: imageUrls[0],
       })
     );
 
@@ -33,25 +39,21 @@ const MenuItemCard = ({
 
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-      <Link to={`${MENU_ITEMS_ROUTE}/${id}`}>
-        <div className="relative rounded-t-lg h-50 w-full overflow-hidden">
-          <img
-            src={imageUrls[0] || pizza}
-            alt={name}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full"
-          />
-        </div>
-      </Link>
+      <div className="relative rounded-t-lg h-50 w-full overflow-hidden">
+        <img
+          src={imageUrls[0] || pizza}
+          alt={name}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full"
+        />
+      </div>
       <div className="p-5">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm">
           {category}
         </span>
 
-        <Link to={`${MENU_ITEMS_ROUTE}/${id}`}>
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-            {name}
-          </h5>
-        </Link>
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+          {name}
+        </h5>
         <div className="relative h-14 w-full overflow-hidden mb-2">
           <p className="absolute top-0 left-0 w-full text-left break-words">
             {description}
@@ -70,6 +72,7 @@ const MenuItemCard = ({
           </button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -9,9 +9,7 @@ import {
 import { getOrdersByUser } from "../../api/order";
 import OrdersCard from "../../components/orders/Card";
 import Spinner from "../../components/Spinner";
-import { ROLE_ADMIN } from "../../constants/userRoles";
-import { ORDERS_LIST_ROUTE } from "../../constants/routes";
-import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const orderTabs = [
   {
@@ -44,7 +42,7 @@ function Orders() {
 
     getOrdersByUser(status, user?.id)
       .then((data) => setOrders(data))
-      .catch((error) => console.log(error))
+      .catch((error) => toast.error(error.response?.data, { autoClose: 1500 }))
       .finally(() => setLoading(false));
   }, [status, user]);
 
@@ -86,6 +84,7 @@ function Orders() {
           ))
         )}
       </div>
+      <ToastContainer />
     </section>
   );
 }

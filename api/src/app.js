@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import connectCloudinary from "./config/cloudinary.js";
 import connectDB from "./config/database.js";
+import employeeScheduleRoutes from "./routes/employeeScheduleRoutes.js";
 import menuItemRoutes from "./routes/menuItemRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import security from "./config/security.js";
@@ -42,6 +43,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/menu-items", upload.array("images", 5), menuItemRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/schedules", employeeScheduleRoutes);
 app.use("/api/users", upload.single("image"), userRoutes);
 
 export default app;
