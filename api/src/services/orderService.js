@@ -10,10 +10,17 @@ import requestKhalti from "../utils/khalti.js";
 import paymentService from "./paymentService.js";
 
 const getAll = async (query) => {
-  const reqQuery = query?.status ? { status: query.status } : {};
+  const reqQuery = {};
+
+  if (query.isTableOrder) reqQuery.tableNumber = { $ne: null};
+  if (query.customer) reqQuery.customer = { $ne: null };
+  if (query.status) reqQuery.status = query.status;
+
+  const sort = query && query.sort ? JSON.parse(query.sort) : { createdAt: -1 };
 
   const orders = await Order.find(reqQuery)
-    .sort({ createdAt: -1 })
+    .sort(sort)
+    .populate("customer")
     .populate("items.menuItem")
     .exec();
 
@@ -50,7 +57,7 @@ const createOrder = async (input, userId) => {
 };
 
 const updateOrder = async (id, input) => {
-  const order = await Order.findByIdAndUpdate(id, input);
+  const order = await Order.findByIdAndUpdate(id, input, { new: true });
 
   return order;
 };

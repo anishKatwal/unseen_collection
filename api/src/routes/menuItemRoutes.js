@@ -19,10 +19,10 @@ router.get("/category/:category", getMenuItemsByCategory);
 
 router.get("/:id", getMenuItemById);
 
-router.post("/", auth, [roleBasedAuth(ROLE_EMPLOYEE)], createMenuItem);
+router.post("/", auth, roleBasedAuth(ROLE_EMPLOYEE), createMenuItem);
 
-router.put("/:id", auth, [roleBasedAuth(ROLE_EMPLOYEE)], updateMenuItem);
+router.put("/:id", auth, roleBasedAuth(ROLE_EMPLOYEE), updateMenuItem);
 
-router.delete("/:id", [auth, roleBasedAuth(ROLE_ADMIN)], deleteMenuItem);
+router.delete("/:id", auth, roleBasedAuth(ROLE_ADMIN), deleteMenuItem);
 
 export default router;

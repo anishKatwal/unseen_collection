@@ -23,7 +23,7 @@ const getCustomers = async (req, res) => {
 
 const getEmployees = async (req, res) => {
   try {
-    const data = await userService.getEmployees();
+    const data = await userService.getEmployees(req.query);
 
     res.json(data);
   } catch (error) {

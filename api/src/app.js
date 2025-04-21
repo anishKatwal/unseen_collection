@@ -3,8 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import multer from "multer";
-import tableOrderRoutes from "./routes/tableOrderRoutes.js"; // 👈 new import
-
 
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -47,6 +45,5 @@ app.use("/api/menu-items", upload.array("images", 5), menuItemRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/schedules", employeeScheduleRoutes);
 app.use("/api/users", upload.single("image"), userRoutes);
-app.use("/api/table-orders", tableOrderRoutes); // 👈 mount the route
 
 export default app;

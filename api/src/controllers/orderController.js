@@ -167,13 +167,32 @@ const deleteOrder = async (req, res) => {
   try {
     const order = await orderService.getOrderById(id);
 
-    if (order.userId != user.id && !user.roles.includes(ROLE_ADMIN)) {
+    if (order.createdBy != user.id && !user.roles.includes(ROLE_ADMIN)) {
       return res.status(403).send("Access denied");
     }
 
     await orderService.deleteOrder(id);
 
     res.send("Order deleted successfully.");
+  } catch (error) {
+    res.status(error.statusCode || 500).send(error.message);
+  }
+};
+
+const createTableOrder = async (req, res) => {
+  try {
+    const input = req.body;
+    const userId = req?.user.id;
+
+    if (!input.tableNumber) {
+      return res.status(422).send("Table number is required.");
+    }
+
+    if (!input.items) return res.status(422).send("Order items is required.");
+
+    const data = await orderService.createOrder(input, userId);
+
+    res.json(data);
   } catch (error) {
     res.status(error.statusCode || 500).send(error.message);
   }
@@ -189,4 +208,5 @@ export {
   getOrdersByUser,
   updateOrder,
   updateOrderStatus,
+  createTableOrder,
 };

@@ -3,6 +3,7 @@ import {
   checkoutOrder,
   confirmOrder,
   createOrder,
+  createTableOrder,
   deleteOrder,
   getAll,
   getOrderById,
@@ -24,6 +25,8 @@ router.get("/:id", auth, getOrderById);
 
 router.post("/", auth, createOrder);
 
+router.post("/table", auth, roleBasedAuth(ROLE_EMPLOYEE), createTableOrder);
+
 router.put("/:id", auth, updateOrder);
 
 router.put("/:id/checkout", auth, checkoutOrder);
@@ -36,6 +39,6 @@ router.put(
   updateOrderStatus
 );
 
-router.delete("/:id", [auth, roleBasedAuth(ROLE_ADMIN)], deleteOrder);
+router.delete("/:id", auth, deleteOrder);
 
 export default router;

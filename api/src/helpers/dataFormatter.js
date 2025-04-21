@@ -19,7 +19,7 @@ export const formatOrderData = (data) => ({
   id: data._id,
   orderNumber: data.orderNumber,
   tableNumber: data.tableNumber,
-  customerId: data.customer,
+  customer: data.customer,
   items: data.items.map(({ menuItem, quantity, price }) => {
     if (!menuItem) return;
 

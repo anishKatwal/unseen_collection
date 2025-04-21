@@ -17,7 +17,9 @@ const getCustomers = async () => {
   return users.map((user) => formatUserData(user));
 };
 
-const getEmployees = async () => {
+const getEmployees = async (query) => {
+  const sort = JSON.parse(query.sort || "{}");
+
   const users = await User.find({
     $and: [
       { roles: ROLE_EMPLOYEE },
@@ -27,7 +29,7 @@ const getEmployees = async () => {
         },
       },
     ],
-  });
+  }).sort(sort);
 
   return users.map((user) => formatUserData(user));
 };

@@ -1,4 +1,3 @@
-import { ROLE_ADMIN } from "../constants/roles.js";
 import menuItemService from "../services/menuItemService.js";
 
 const getAllMenuItems = async (req, res) => {
@@ -56,17 +55,11 @@ const createMenuItem = async (req, res) => {
 const updateMenuItem = async (req, res) => {
   const data = req.body;
   const id = req.params.id;
-  const user = req.user;
 
   try {
     const menuItem = await menuItemService.getMenuItemById(id);
 
     if (!menuItem) return res.status(404).send("MenuItem not found.");
-
-    // Only ADMIN or created user can update menuItems
-    if (menuItem.createdBy != user.id && !user.roles.includes(ROLE_ADMIN)) {
-      return res.status(403).send("Access denied");
-    }
 
     const updatedMenuItem = await menuItemService.updateMenuItem(id, data);
 
