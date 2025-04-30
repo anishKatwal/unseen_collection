@@ -1,10 +1,10 @@
 import { IoTrashOutline } from "react-icons/io5";
-import { removeFromCart } from "../../redux/cart/cartSlice";
+import { removeFromOrder } from "../../../redux/order/orderSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import Modal from "../Modal";
+import Modal from "../../Modal";
 
-function RemoveFromCart({ item }) {
+function RemoveFromOrder({ item }) {
   const [selectedItem, setSelectedItem] = useState();
   const [showRemovePopup, setShowRemovePopup] = useState(false);
 
@@ -16,7 +16,7 @@ function RemoveFromCart({ item }) {
   }
 
   function confirmRemoveItem() {
-    dispatch(removeFromCart(selectedItem));
+    dispatch(removeFromOrder(selectedItem));
     setShowRemovePopup(false);
     setSelectedItem(null);
   }
@@ -27,13 +27,13 @@ function RemoveFromCart({ item }) {
         <IoTrashOutline className="inline-block text-red-500 hover:text-red-700" />
       </button>
       <Modal
-        label={"Remove Item from cart"}
+        label={"Remove Item from order"}
         isOpen={showRemovePopup}
         setIsOpen={setShowRemovePopup}
         body={
           <p className="text-left">
             Are you sure you want to remove <b>{selectedItem?.name}</b> from
-            cart?
+            order?
           </p>
         }
         actions={
@@ -57,4 +57,4 @@ function RemoveFromCart({ item }) {
   );
 }
 
-export default RemoveFromCart;
+export default RemoveFromOrder;

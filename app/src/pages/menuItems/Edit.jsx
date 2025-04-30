@@ -33,8 +33,8 @@ const EditMenuItem = () => {
 
         <div className="md:w-2/3 xl:w-1/2 mx-auto px-4">
           <h2 className="text-center text-2xl md:text-3xl font-semibold text-textColor">
-            Edit Menu item
-          </h2>{" "}
+            Edit Menu Item
+          </h2>
           {menuItem ? (
             <MenuItemForm isEditing={true} menuItem={menuItem} />
           ) : (

@@ -1,3 +1,4 @@
+import formatSearchParams from "../helpers/formatParams";
 import api from "./api";
 
 async function checkoutOrder(id, data) {
@@ -20,8 +21,14 @@ async function createOrder(data) {
   return response.data;
 }
 
-async function getOrders() {
-  const response = await api.get(`/api/orders`);
+async function createTableOrder(data) {
+  const response = await api.post(`/api/orders/table`, data);
+
+  return response.data;
+}
+
+async function getOrders(query) {
+  const response = await api.get(`/api/orders?${formatSearchParams(query)}`);
 
   return response.data;
 }
@@ -55,5 +62,6 @@ export {
   getOrdersByUser,
   confirmOrder,
   deleteOrder,
+  createTableOrder,
   updateOrderStatus,
 };

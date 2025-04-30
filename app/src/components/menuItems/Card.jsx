@@ -61,7 +61,7 @@ const MenuItemCard = ({
           <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-white to-transparent h-8 pointer-events-none"></div>
         </div>
         <div className="flex items-center justify-between">
-          <h3 className="text-xl">${price}</h3>
+          <h3 className="text-xl">Rs. {price}</h3>
 
           <button
             onClick={addItemToCart}

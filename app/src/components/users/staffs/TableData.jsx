@@ -3,12 +3,14 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { EDIT_STAFF_ROUTE } from "../../../constants/routes";
 import { updateUser } from "../../../api/user";
+import { format } from "date-fns";
 
 const StaffsTableData = ({
   index,
   id,
   name,
   email,
+  createdAt,
   phone,
   address,
   isActive,
@@ -43,6 +45,7 @@ const StaffsTableData = ({
         <td className="px-6 py-4">{email}</td>
         <td className="px-6 py-4">{phone}</td>
         <td className="px-6 py-4">{address}</td>
+        <td className="px-6 py-4">{format(createdAt, "dd MMM, yyyy")}</td>
         <td className="px-6 py-4">
           <label className="inline-flex items-center cursor-pointer">
             <input

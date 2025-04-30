@@ -15,7 +15,7 @@ const AddMenuItem = () => {
 
         <div className="md:w-2/3 xl:w-1/2 mx-auto px-4">
           <h2 className="text-center text-2xl md:text-3xl font-semibold text-textColor">
-            Add Menu item
+            Add Menu Item
           </h2>
           <MenuItemForm />
         </div>

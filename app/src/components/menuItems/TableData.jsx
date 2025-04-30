@@ -3,12 +3,14 @@ import { editMenuItem } from "../../api/menuItem";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const MenuItemTableData = ({
   id,
   index,
   name,
   category,
+  createdAt,
   price,
   isActive,
   deleteAction,
@@ -40,7 +42,8 @@ const MenuItemTableData = ({
           {name}
         </th>
         <td className="px-6 py-4">{category}</td>
-        <td className="px-6 py-4">${price}</td>
+        <td className="px-6 py-4">Rs. {price}</td>
+        <td className="px-6 py-4">{format(createdAt, "dd MMM, yyyy")}</td>
         <td className="px-6 py-4">
           <label className="inline-flex items-center cursor-pointer">
             <input

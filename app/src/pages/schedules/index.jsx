@@ -5,13 +5,14 @@ import { parseISO, startOfWeek, format, parse, getDay } from "date-fns";
 import { useState, useEffect } from "react";
 import {
   ADD_SCHEDULE_ROUTE,
-  EDIT_MENU_ITEM_ROUTE,
   EDIT_SCHEDULE_ROUTE,
 } from "../../constants/routes";
 import { Link } from "react-router-dom";
 import { RiAddLargeLine } from "react-icons/ri";
 import Modal from "../../components/Modal";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { ROLE_ADMIN } from "../../constants/userRoles";
 
 const locales = {
   en: enUS,
@@ -32,7 +33,11 @@ const SchedulesPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const { user } = useSelector((state) => state.auth);
+
   const handleSelectEvent = (event) => {
+    if (!user.roles.includes(ROLE_ADMIN)) return;
+
     setSelectedEvent(event);
 
     setIsOpen(true);
@@ -62,7 +67,7 @@ const SchedulesPage = () => {
 
         setEvents(formattedEvents);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error.response?.data, { autoClose: 1500 }));
   }, [selectedEvent]);
 
   return (
@@ -73,13 +78,15 @@ const SchedulesPage = () => {
             Staff Schedules
           </h2>
 
-          <Link
-            to={ADD_SCHEDULE_ROUTE}
-            className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2 flex items-center"
-          >
-            Create new schedule
-            <RiAddLargeLine className="ml-2" />
-          </Link>
+          {user.roles.includes(ROLE_ADMIN) && (
+            <Link
+              to={ADD_SCHEDULE_ROUTE}
+              className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2 flex items-center"
+            >
+              Create new schedule
+              <RiAddLargeLine className="ml-2" />
+            </Link>
+          )}
         </div>
 
         <div className="py-5">
@@ -95,7 +102,6 @@ const SchedulesPage = () => {
             view={view}
             views={["month", "week", "day"]}
             className="rounded-md bg-white py-6 px-8 text-sm h-svh"
-            selectable
             onSelectEvent={handleSelectEvent}
             components={{
               header: (props) => <div className="py-2">{props.label}</div>,
@@ -113,11 +119,15 @@ const SchedulesPage = () => {
             <div>
               <p>
                 Start Date & Time:
-                <span className="ml-2">{format(selectedEvent?.start, "yyyy-MM-dd HH:mm")}</span>
+                <span className="ml-2">
+                  {format(selectedEvent?.start, "yyyy-MM-dd HH:mm")}
+                </span>
               </p>
               <p>
                 End Date & Time:
-                <span className="ml-2">{format(selectedEvent?.end, "yyyy-MM-dd HH:mm")}</span>
+                <span className="ml-2">
+                  {format(selectedEvent?.end, "yyyy-MM-dd HH:mm")}
+                </span>
               </p>
             </div>
           )

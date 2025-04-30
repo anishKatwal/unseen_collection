@@ -3,19 +3,28 @@ import {
   ORDER_STATUS_COMPLETED,
   ORDER_STATUS_CONFIRMED,
   ORDER_STATUS_PENDING,
+  ORDER_STATUS_PREPARING,
+  ORDER_STATUS_SERVED,
   ORDER_STATUS_SHIPPED,
 } from "../../constants/orderStatus";
 import { updateOrderStatus } from "../../api/order";
 import { toast } from "react-toastify";
 
-const orderStatuses = [
-  ORDER_STATUS_PENDING,
-  ORDER_STATUS_CONFIRMED,
-  ORDER_STATUS_SHIPPED,
-  ORDER_STATUS_COMPLETED,
-];
+const OrderStatus = ({ orderId, orderStatus, isTableOrder }) => {
+  const orderStatuses = isTableOrder
+    ? [
+        ORDER_STATUS_PENDING,
+        ORDER_STATUS_PREPARING,
+        ORDER_STATUS_SERVED,
+        ORDER_STATUS_COMPLETED,
+      ]
+    : [
+        ORDER_STATUS_PENDING,
+        ORDER_STATUS_CONFIRMED,
+        ORDER_STATUS_SHIPPED,
+        ORDER_STATUS_COMPLETED,
+      ];
 
-const OrderStatus = ({ orderId, orderStatus }) => {
   function updateStatus(e) {
     const status = e.target.value;
 

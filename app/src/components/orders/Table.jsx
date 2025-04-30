@@ -6,13 +6,20 @@ import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import OrderStatus from "./Status";
 import Spinner from "../Spinner";
+import { format } from "date-fns";
+import {
+  RiArrowDownLine,
+  RiArrowUpDownLine,
+  RiArrowUpLine,
+} from "react-icons/ri";
 
-function OrdersTable() {
+function OrdersTable({ columns, isTableOrder = false }) {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [isStatusUpdated, setIsStatusUpdated] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [sort, setSort] = useState({ createdAt: -1 });
 
   function confirmDeleteOrder() {
     deleteOrder(selectedOrder?.id)
@@ -20,24 +27,34 @@ function OrdersTable() {
         toast.success("Order deleted successfully", { autoClose: 500 });
         setIsStatusUpdated(true);
       })
-      .catch((error) => console.log(error))
+      .catch((error) => toast.error(error.response.data, { autoClose: 500 }))
       .finally(() => {
         setSelectedOrder(null);
         setIsOpen(false);
       });
   }
 
-  useEffect(() => {
-    if (!isStatusUpdated) return;
+  function updateSort(field) {
+    setSort({ [field]: sort[field] == 1 ? -1 : 1 });
+  }
 
-    getOrders()
+  useEffect(() => {
+    const query = { sort };
+
+    if (isTableOrder) {
+      query.isTableOrder = true;
+    } else {
+      query.customer = true;
+    }
+
+    getOrders(query)
       .then((data) => setOrders(data))
       .catch((error) => toast.error(error.response?.data, { autoClose: 1500 }))
       .finally(() => {
         setLoading(false);
         setIsStatusUpdated(false);
       });
-  }, [isStatusUpdated, selectedOrder]);
+  }, [isStatusUpdated, selectedOrder, sort, isTableOrder]);
 
   if (loading)
     return (
@@ -51,30 +68,47 @@ function OrdersTable() {
       <table className="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
           <tr>
-            <th scope="col" className="px-6 py-3">
-              Order Number
-            </th>
-            <th scope="col" className="px-8 py-3">
-              Menu Items
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Total price
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Status
-            </th>
+            {columns.map((column) => (
+              <th
+                key={column.slug}
+                scope="col"
+                className="px-6 py-3 hover:cursor-pointer hover:text-gray-800"
+                title="sort"
+                onClick={() => column.sortable && updateSort(column.slug)}
+              >
+                <p className="flex items-center">
+                  <span className="mr-1">{column.label}</span>
+                  {sort[column.slug] ? (
+                    sort[column.slug] == 1 ? (
+                      <RiArrowUpLine />
+                    ) : (
+                      <RiArrowDownLine />
+                    )
+                  ) : column.sortable ? (
+                    <RiArrowUpDownLine />
+                  ) : null}
+                </p>
+              </th>
+            ))}
             <th scope="col" className="px-6 py-3">
               <HiOutlineCog6Tooth className="w-full h-4 text-center" />
             </th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
+          {orders.map((order, index) => (
             <tr
-              key={order.id}
+              key={index}
               className="bg-white border-b border-gray-200 hover:bg-gray-50 "
             >
-              <td className="px-6 py-4 text-gray-900">{order.orderNumber}</td>
+              {isTableOrder ? (
+                <td className="px-6 py-4 font-bold">{order.tableNumber}</td>
+              ) : (
+                <>
+                  <td className="px-6 py-4 text-gray-900">{index + 1}.</td>
+                  <td className="px-6 py-4">{order.customer?.name}</td>
+                </>
+              )}
               <td className="px-6 py-4">
                 {order.items.map((item, index) => {
                   if (!item?.menuItem) return;
@@ -94,7 +128,14 @@ function OrdersTable() {
               </td>
               <td className="px-6 py-4">{order.totalPrice}</td>
               <td className="px-6 py-4">
-                <OrderStatus orderStatus={order.status} orderId={order.id} />
+                {format(order.createdAt, "dd MMM, yyyy")}
+              </td>
+              <td className="px-6 py-4">
+                <OrderStatus
+                  orderStatus={order.status}
+                  orderId={order.id}
+                  isTableOrder={isTableOrder}
+                />
               </td>
               <td className="px-6 py-4 text-center">
                 <button

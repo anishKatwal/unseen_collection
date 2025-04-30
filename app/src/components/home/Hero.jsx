@@ -59,7 +59,7 @@ function Hero() {
                   {slide.title}
                 </h1>
                 <h4 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 my-1 md:my-3">
-                  <span className="text-3xl md:text-4xl lg:text-6xl">$</span>
+                  <span className="text-3xl md:text-4xl lg:text-6xl">Rs. </span>
                   {slide.price}
                 </h4>
                 <Link

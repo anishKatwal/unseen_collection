@@ -6,8 +6,10 @@ async function getAllUsers(query) {
   return response.data;
 }
 
-async function getStaffs() {
-  const response = await api.get(`/api/users/employees`);
+async function getStaffs({ sort }) {
+  const response = await api.get(
+    `/api/users/employees?sort=${JSON.stringify(sort)}`
+  );
 
   return response.data;
 }

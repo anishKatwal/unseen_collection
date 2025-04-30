@@ -1,5 +1,34 @@
 import OrdersTable from "../../components/orders/Table";
 
+const columns = [
+  {
+    label: "S.N",
+    slug: "id",
+  },
+  {
+    label: "Customer",
+    slug: "customer",
+  },
+  {
+    label: "Menu items",
+    slug: "items",
+  },
+  {
+    label: "Total price",
+    slug: "totalPrice",
+    sortable: true,
+  },
+  {
+    label: "Created At",
+    slug: "createdAt",
+    sortable: true,
+  },
+  {
+    label: "Status",
+    slug: "status",
+  },
+];
+
 function OrdersList() {
   return (
     <section className="py-10 bg-slate-100 min-h-svh  px-4 lg:px-6">
@@ -8,7 +37,7 @@ function OrdersList() {
           Manage Orders
         </h2>
 
-        <OrdersTable />
+        <OrdersTable columns={columns} />
       </div>
     </section>
   );

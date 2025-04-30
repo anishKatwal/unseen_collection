@@ -1,5 +1,6 @@
 import { ORDER_STATUS_PENDING } from "../../constants/orderStatus";
 import ConfirmOrder from "./Confirm";
+import DeleteOrder from "./Delete";
 import pizza from "../../assets/images/pizza.png";
 
 function OrdersCard({ order, status }) {
@@ -33,7 +34,7 @@ function OrdersCard({ order, status }) {
               <div>
                 <h5 className="font-semibold text-xl">{item.menuItem.name}</h5>
                 <p className="text-sm">
-                  ${item.price} (x {item.quantity})
+                  Rs. {item.price} (x {item.quantity})
                 </p>
               </div>
             </div>
@@ -43,10 +44,11 @@ function OrdersCard({ order, status }) {
       <div className="bg-slate-200 rounded-b-2xl py-3 px-5 flex justify-between items-center">
         <p>
           Total price:
-          <span className="font-semibold ml-2">${order.totalPrice}</span>
+          <span className="font-semibold ml-2">Rs. {order.totalPrice}</span>
         </p>
-        <div className={status == ORDER_STATUS_PENDING ? "block" : "hidden"}>
+        <div className={status == ORDER_STATUS_PENDING ? "flex" : "hidden"}>
           <ConfirmOrder order={order} />
+          <DeleteOrder order={order} />
         </div>
       </div>
     </div>

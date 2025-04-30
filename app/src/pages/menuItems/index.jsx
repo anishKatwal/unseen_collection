@@ -19,7 +19,7 @@ const MenuItems = () => {
 
     if (menuItemName) filters = `isActive=true&name=${menuItemName}`;
 
-    getAllMenuItems(filters)
+    getAllMenuItems({ filters, sort: { createdAt: -1 } })
       .then((response) => setMenuItems(response.data))
       .finally(() => setLoading(false));
   }, [menuItemName]);

@@ -54,7 +54,7 @@ const SchedulesForm = ({ isEditing = false, schedule }) => {
   useEffect(() => {
     setLoading(true);
 
-    getStaffs()
+    getStaffs({ sort: { createdAt: -1 } })
       .then((data) => setStaffs(data))
       .finally(() => setLoading(false));
   }, []);

@@ -23,7 +23,7 @@ function FeaturedItem() {
             impedit?
           </p>
           <h4 className="text-2xl md:text-3xl font-bold text-orange-500 my-3">
-            <span className="text-3xl md:text-4xl">$</span>
+            <span className="text-3xl md:text-4xl">Rs.</span>
             899
           </h4>
 
